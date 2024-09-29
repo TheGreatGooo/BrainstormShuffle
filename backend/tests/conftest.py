@@ -2,7 +2,7 @@ import os
 import tempfile
 
 import pytest
-from brainstorm_speedrun import create_app
+from brainstorm_shuffle import create_app
 
 
 @pytest.fixture
