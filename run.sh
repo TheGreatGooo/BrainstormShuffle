@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 pushd frontend/brainstorm-shuffle-app
 npm run build
 popd
