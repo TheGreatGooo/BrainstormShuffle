@@ -1,4 +1,4 @@
-FROM python:3-slim
+FROM docker.io/python:3-slim
 COPY backend/requirements.txt /
 RUN pip3 install --upgrade pip
 RUN pip3 install -r /requirements.txt
