@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 pushd frontend/brainstorm-shuffle-app
+npm install
 npm run build
 popd
 podman build -f Dockerfile.backend -t local/brainstorm-shuffle-backend
