@@ -88,6 +88,17 @@ def register():
     new_user = User(name=data['name'], role=data['role'])
     return register_user(new_user)
 
+@api.route('/login', methods=['POST'])
+def register():
+    data = request.json
+    new_user = User(name=data['name'], role=data['role'])
+    if new_user.name == "admin":
+        return jsonify({"msg":"Username admin cannot be logged into, please use another"}), 400
+    for user in brainstorm.users:
+        if new_user.name == user.name:
+            return jsonify(user.toDict()), 201
+    return jsonify({"msg":"Username not found"}), 400
+
 @api.route('/next_round', methods=['POST'])
 def start_round():
     users = brainstorm.users

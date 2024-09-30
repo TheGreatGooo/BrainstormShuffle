@@ -41,6 +41,22 @@ const App = () => {
     }
   };
 
+  const loginUser = async () => {
+    try {
+      const response = await axios.post('backend/login', { name: username, role: "na" });
+      if (response.status === 201) {
+        localStorage.setItem('registeredUser', username);
+        setRegisteredUser(username);
+      }
+    } catch (error) {
+      if (error.response){
+        setErrorMsg(error.response.data.msg);
+      }else{
+        setErrorMsg("Something bad happened: " + error)
+      }
+    }
+  };
+
   const getState = async () => {
     try {
       const response = await axios.get('backend/state', { params: { user: registeredUser } });
@@ -101,6 +117,9 @@ const App = () => {
           />
           <Button variant="contained" color="primary" onClick={registerUser}>
             Register
+          </Button>
+          <Button variant="contained" color="primary" onClick={loginUser}>
+            Login
           </Button>
           {errorMsg && <Typography color="error">{errorMsg}</Typography>}
         </Box>
