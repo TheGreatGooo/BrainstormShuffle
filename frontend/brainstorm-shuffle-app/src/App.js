@@ -21,7 +21,7 @@ const App = () => {
     const storedUsername = localStorage.getItem('registeredUser');
     if (storedUsername) {
       setUsername(storedUsername);
-      setRegisteredUser(username);
+      setRegisteredUser(storedUsername);
     }
   }, []);
 
