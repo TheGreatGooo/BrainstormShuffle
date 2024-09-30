@@ -35,8 +35,10 @@ const App = () => {
     } catch (error) {
       if (error.response){
         setErrorMsg(error.response.data.msg);
+        console.log(error.response.data.msg);
       }else{
-        setErrorMsg("Something bad happened: " + error)
+        setErrorMsg("Something bad happened: " + error);
+        console.log("Something bad happened: " + error);
       }
     }
   };
@@ -51,8 +53,10 @@ const App = () => {
     } catch (error) {
       if (error.response){
         setErrorMsg(error.response.data.msg);
+        console.log(error.response.data.msg);
       }else{
-        setErrorMsg("Something bad happened: " + error)
+        setErrorMsg("Something bad happened: " + error);
+        console.log("Something bad happened: " + error);
       }
     }
   };
