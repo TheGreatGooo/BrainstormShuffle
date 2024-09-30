@@ -89,7 +89,7 @@ def register():
     return register_user(new_user)
 
 @api.route('/login', methods=['POST'])
-def register():
+def login():
     data = request.json
     new_user = User(name=data['name'], role=data['role'])
     if new_user.name == "admin":
