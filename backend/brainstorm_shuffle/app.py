@@ -218,7 +218,7 @@ def user_state():
         for pairing in current_round.pairings :
             if pairing.user1 == user_name or pairing.user2 == user_name :
                 resp['table'] = pairing.table
-        resp['seconds_remaining'] = (current_round.timestamp + 10*60) - int(time.time())
+        resp['seconds_remaining'] = max(0, (current_round.timestamp + 10*60) - int(time.time()))
     return jsonify(resp), 200
 
 @api.route('/full_state', methods=['GET'])
