@@ -1,3 +1,2 @@
 FROM lscr.io/linuxserver/nginx:latest
-COPY frontend/brainstorm-shuffle-app/dist /config/www
 COPY nginx.conf /config/nginx/site-confs/default.conf
