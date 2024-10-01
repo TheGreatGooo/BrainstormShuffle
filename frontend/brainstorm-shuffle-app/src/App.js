@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
   Container,
   TextField,
@@ -7,18 +7,18 @@ import {
   Typography,
   CircularProgress,
   Box,
-} from '@mui/material';
+} from "@mui/material";
 
 const App = () => {
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState("");
   const [state, setState] = useState(0);
   const [secondsRemaining, setSecondsRemaining] = useState(0);
-  const [idea, setIdea] = useState('');
-  const [errorMsg, setErrorMsg] = useState('');
-  const [registeredUser, setRegisteredUser] = useState('');
+  const [idea, setIdea] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [registeredUser, setRegisteredUser] = useState("");
 
   useEffect(() => {
-    const storedUsername = localStorage.getItem('registeredUser');
+    const storedUsername = localStorage.getItem("registeredUser");
     if (storedUsername) {
       setUsername(storedUsername);
       setRegisteredUser(storedUsername);
@@ -27,15 +27,18 @@ const App = () => {
 
   const registerUser = async () => {
     try {
-      const response = await axios.post('backend/register', { name: username, role: "na" });
+      const response = await axios.post("backend/register", {
+        name: username,
+        role: "na",
+      });
       if (response.status === 201) {
-        localStorage.setItem('registeredUser', username);
+        localStorage.setItem("registeredUser", username);
         setRegisteredUser(username);
       }
     } catch (error) {
-      if (error.response){
+      if (error.response) {
         setErrorMsg(error.response.data.msg);
-      }else{
+      } else {
         setErrorMsg("Something bad happened: " + error);
       }
     }
@@ -43,15 +46,18 @@ const App = () => {
 
   const loginUser = async () => {
     try {
-      const response = await axios.post('backend/login', { name: username, role: "na" });
+      const response = await axios.post("backend/login", {
+        name: username,
+        role: "na",
+      });
       if (response.status === 201) {
-        localStorage.setItem('registeredUser', username);
+        localStorage.setItem("registeredUser", username);
         setRegisteredUser(username);
       }
     } catch (error) {
-      if (error.response){
+      if (error.response) {
         setErrorMsg(error.response.data.msg);
-      }else{
+      } else {
         setErrorMsg("Something bad happened: " + error);
       }
     }
@@ -59,7 +65,9 @@ const App = () => {
 
   const getState = async () => {
     try {
-      const response = await axios.get('backend/state', { params: { user: registeredUser } });
+      const response = await axios.get("backend/state", {
+        params: { user: registeredUser },
+      });
       const { state } = response.data;
       setState(state);
       if (state === 1) {
@@ -72,7 +80,7 @@ const App = () => {
 
   const postIdea = async (newIdea) => {
     try {
-      await axios.post('/idea', { username: newIdea });
+      await axios.post("/idea", { username: newIdea });
     } catch (error) {
       console.error(error);
     }
@@ -129,7 +137,9 @@ const App = () => {
         <Box textAlign="center" mt={5}>
           <Typography variant="h4">Next Round Starting!</Typography>
           <Typography variant="h5">
-            {`Time Remaining: ${Math.floor(secondsRemaining / 60)}:${String(secondsRemaining % 60).padStart(2, '0')}`}
+            {`Time Remaining: ${Math.floor(secondsRemaining / 60)}:${String(
+              secondsRemaining % 60
+            ).padStart(2, "0")}`}
           </Typography>
           <TextField
             variant="outlined"
@@ -163,13 +173,13 @@ const App = () => {
       {state === 3 && (
         <Box textAlign="center" mt={5}>
           <Typography variant="h4">Thank You!</Typography>
-          <Typography>Your session has ended. Please submit your question.</Typography>
+          <Typography>
+            Your session has ended. Please submit your question.
+          </Typography>
         </Box>
       )}
 
-      {state === 1 && (
-        <CircularProgress />
-      )}
+      {state === 1 && <CircularProgress />}
     </Container>
   );
 };
