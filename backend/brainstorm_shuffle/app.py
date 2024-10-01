@@ -103,25 +103,28 @@ def login():
 def idea():
     data = request.json
 
-    idea_log = IdeaLog(user_name=data['user_name'], idea=data['idea'])
-    # TODO: Need to upsert
-    db.session.add(idea_log)
-    db.session.commit()
+    result = db.session.query(IdeaLog).filter(IdeaLog.user_name == data['user_name']).order_by(IdeaLog.timestamp.desc()).first()
 
-    return jsonify(data), 200
-
+    if (result is None):
+        idea_log = IdeaLog(user_name=data['user_name'], idea=data['idea'])
+        db.session.add(idea_log)
+        db.session.commit()
+        return jsonify(data), 200
+    else:
+        result.idea = data['idea']
+        db.session.commit()
+        return jsonify(result.toDict()), 200
 
 @api.route('/idea', methods=['GET'])
 def idea_get():
-    data = request.json
+    user_name = request.args.get("user_name")
 
-    IdeaLog.query
+    result = db.session.query(IdeaLog).filter(IdeaLog.user_name == user_name).order_by(IdeaLog.timestamp.desc()).first()
 
-    idea_log = IdeaLog(user_name=data['user_name'], idea=data['idea'])
-    IdeaLog.query.
-    db.session.commit()
-
-    return jsonify(data), 200
+    if (result is None):
+        return jsonify({}), 204
+    else:
+        return jsonify(result.toDict()), 200
 
 
 @api.route('/next_round', methods=['POST'])

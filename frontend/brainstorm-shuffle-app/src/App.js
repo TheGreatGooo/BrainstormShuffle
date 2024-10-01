@@ -110,6 +110,18 @@ const App = () => {
     }
   }, [state, secondsRemaining]);
 
+  useEffect(() => {
+    async function fetchExistingIdea() {
+      const previousIdea = await axios.get(`${apiRoot}idea`, {
+        params: { user_name: registeredUser },
+      });
+      if (previousIdea.status === 200 && previousIdea.data.idea) {
+        setIdea(previousIdea.data.idea);
+      }
+    }
+    fetchExistingIdea();
+  }, [registeredUser]);
+
   const handleIdeaChange = (e) => {
     const newIdea = e.target.value;
     setIdea(newIdea);
