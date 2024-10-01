@@ -9,6 +9,8 @@ import {
   Box,
 } from "@mui/material";
 
+const apiRoot = window.localStorage.getItem("apiRoot") || "/backend/";
+
 const App = () => {
   const [username, setUsername] = useState("");
   const [state, setState] = useState(0);
@@ -27,7 +29,7 @@ const App = () => {
 
   const registerUser = async () => {
     try {
-      const response = await axios.post("backend/register", {
+      const response = await axios.post(`${apiRoot}register`, {
         name: username,
         role: "na",
       });
@@ -46,7 +48,7 @@ const App = () => {
 
   const loginUser = async () => {
     try {
-      const response = await axios.post("backend/login", {
+      const response = await axios.post(`${apiRoot}login`, {
         name: username,
         role: "na",
       });
@@ -65,7 +67,7 @@ const App = () => {
 
   const getState = async () => {
     try {
-      const response = await axios.get("backend/state", {
+      const response = await axios.get(`${apiRoot}state`, {
         params: { user: registeredUser },
       });
       const { state } = response.data;
@@ -80,7 +82,10 @@ const App = () => {
 
   const postIdea = async (newIdea) => {
     try {
-      await axios.post("/idea", { username: newIdea });
+      await axios.post(`${apiRoot}idea`, {
+        user_name: username,
+        idea: newIdea,
+      });
     } catch (error) {
       console.error(error);
     }
@@ -114,7 +119,13 @@ const App = () => {
   return (
     <Container>
       {state === 0 && !registeredUser && (
-        <Box textAlign="center" mt={5}>
+        <Box
+          textAlign="center"
+          alignItems="center"
+          flexDirection="column"
+          display="flex"
+          mt={5}
+        >
           <Typography variant="h4">Register</Typography>
           <TextField
             variant="outlined"
@@ -123,12 +134,14 @@ const App = () => {
             onChange={(e) => setUsername(e.target.value)}
             margin="normal"
           />
-          <Button variant="contained" color="primary" onClick={registerUser}>
-            Register
-          </Button>
-          <Button variant="contained" color="primary" onClick={loginUser}>
-            Login
-          </Button>
+          <Box gap={1} display="flex">
+            <Button variant="contained" color="primary" onClick={registerUser}>
+              Register
+            </Button>
+            <Button variant="contained" color="primary" onClick={loginUser}>
+              Login
+            </Button>
+          </Box>
           {errorMsg && <Typography color="error">{errorMsg}</Typography>}
         </Box>
       )}
