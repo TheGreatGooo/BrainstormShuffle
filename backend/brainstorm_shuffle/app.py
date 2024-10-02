@@ -128,6 +128,13 @@ def idea_get():
     else:
         return jsonify(result.toDict()), 200
 
+@api.route('/ideas', methods=['GET'])
+def idea_get():
+    result = db.session.query(IdeaLog).all()
+    ideas = []
+    for idea in result:
+        ideas.append(idea.idea)
+    return jsonify(ideas), 200
 
 @api.route('/next_round', methods=['POST'])
 def start_round():
