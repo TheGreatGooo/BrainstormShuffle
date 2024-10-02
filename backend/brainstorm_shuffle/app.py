@@ -250,13 +250,23 @@ def user_state():
     resp = {}
     resp['user'] = user_name
     resp['state'] = brainstorm.state
+    found = False
     if brainstorm.state == NEXT_ROUND_START :
         current_round = brainstorm.rounds[len(brainstorm.rounds)-1]
         for pairing in current_round.pairings :
             if pairing.user1 == user_name or pairing.user2 == user_name :
                 resp['table'] = pairing.table
+                found = True
         resp['seconds_remaining'] = max(0, (current_round.timestamp + 10*60) - int(time.time()))
-    return jsonify(resp), 200
+    elif:
+        for user in brainstorm.users:
+            if user.name == user_name:
+                found = True
+                break
+    if found :
+        return jsonify(resp), 200
+    elif:
+        return jsonify({"msg": "Please relogin"}), 401
 
 @api.route('/full_state', methods=['GET'])
 def full_state():
