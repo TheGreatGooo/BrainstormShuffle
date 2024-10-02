@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, Blueprint
-from .models import db, AuditLog
+from .models import db, AuditLog, IdeaLog
 from .brainstorm import Brainstorm, User, Pairing, Round
 import random
 import time
@@ -98,6 +98,34 @@ def login():
         if new_user.name == user.name:
             return jsonify(user.toDict()), 201
     return jsonify({"msg":"Username not found"}), 400
+
+@api.route('/idea', methods=['POST'])
+def idea():
+    data = request.json
+
+    result = db.session.query(IdeaLog).filter(IdeaLog.user_name == data['user_name']).order_by(IdeaLog.timestamp.desc()).first()
+
+    if (result is None):
+        idea_log = IdeaLog(user_name=data['user_name'], idea=data['idea'])
+        db.session.add(idea_log)
+        db.session.commit()
+        return jsonify(data), 200
+    else:
+        result.idea = data['idea']
+        db.session.commit()
+        return jsonify(result.toDict()), 200
+
+@api.route('/idea', methods=['GET'])
+def idea_get():
+    user_name = request.args.get("user_name")
+
+    result = db.session.query(IdeaLog).filter(IdeaLog.user_name == user_name).order_by(IdeaLog.timestamp.desc()).first()
+
+    if (result is None):
+        return jsonify({}), 204
+    else:
+        return jsonify(result.toDict()), 200
+
 
 @api.route('/next_round', methods=['POST'])
 def start_round():

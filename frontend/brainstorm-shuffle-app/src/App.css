@@ -1,8 +1,13 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
+  background-color: #f5f8fa;
 }
 
 .error {
   color: red;
+}
+
+.MuiFormControl-root {
+  background-color: white !important;
 }

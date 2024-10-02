@@ -12,7 +12,7 @@ def create_app(config):
         flask_app.config[k] = v
     from . import app
     flask_app.register_blueprint(app.api)
-    CORS(flask_app)
+    CORS(flask_app, origins="*")
     db.init_app(flask_app)
 
     with flask_app.app_context():
