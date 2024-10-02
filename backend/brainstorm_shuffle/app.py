@@ -258,7 +258,7 @@ def user_state():
                 resp['table'] = pairing.table
                 found = True
         resp['seconds_remaining'] = max(0, (current_round.timestamp + 10*60) - int(time.time()))
-    elif:
+    else:
         for user in brainstorm.users:
             if user.name == user_name:
                 found = True
