@@ -265,7 +265,7 @@ def user_state():
                 break
     if found :
         return jsonify(resp), 200
-    elif:
+    else:
         return jsonify({"msg": "Please relogin"}), 401
 
 @api.route('/full_state', methods=['GET'])
