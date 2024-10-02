@@ -74,6 +74,8 @@ def get_table_to_use(user_id, user2_id, users, user_rotation_counts, previous_us
     return table_to_use, user1_rotation_count, user2_rotation_count
 
 def register_user(new_user):
+    if brainstorm.state != NOT_STARTED:
+        return jsonify({"msg":"Registration is closed"}), 400
     if new_user.name == "admin":
         return jsonify({"msg":"Username already taken, please use another"}), 400
     for user in brainstorm.users:
