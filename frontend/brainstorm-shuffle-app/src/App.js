@@ -64,18 +64,18 @@ const App = () => {
       const response = await axios.get(`${apiRoot}state`, {
         params: { user: registeredUser },
       });
-      if(response.status == 401){
-        setRegisteredUser("")
-        setUsername("")
-        localStorage.setItem("registeredUser", "");
-        return;
-      }
       setState(response.data.state);
       if (response.data.state === 1) {
         setSecondsRemaining(response.data.seconds_remaining);
         setTable(response.data.table);
       }
     } catch (error) {
+      if(Object.hasOwn(error,"status") && error.status === 401){
+        setRegisteredUser("");
+        setUsername("");
+        localStorage.setItem("registeredUser", "");
+        return;
+      }
       console.error(error);
     }
   };
