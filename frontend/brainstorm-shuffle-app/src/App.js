@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  Container,
-  TextField,
-  Button,
-  Typography,
-  CircularProgress,
-  Box,
-} from "@mui/material";
+import { Container, TextField, Button, Typography, Box } from "@mui/material";
 
 const apiRoot = window.localStorage.getItem("apiRoot") || "/backend/";
 
@@ -18,6 +11,7 @@ const App = () => {
   const [idea, setIdea] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [registeredUser, setRegisteredUser] = useState("");
+  const [table, setTable] = useState(0);
 
   useEffect(() => {
     const storedUsername = localStorage.getItem("registeredUser");
@@ -70,10 +64,10 @@ const App = () => {
       const response = await axios.get(`${apiRoot}state`, {
         params: { user: registeredUser },
       });
-      const { state } = response.data;
-      setState(state);
-      if (state === 1) {
+      setState(response.data.state);
+      if (response.data.state === 1) {
         setSecondsRemaining(response.data.seconds_remaining);
+        setTable(response.data.table);
       }
     } catch (error) {
       console.error(error);
@@ -99,7 +93,7 @@ const App = () => {
     }, 5000);
 
     return () => clearInterval(intervalId);
-  }, [username]);
+  }, [registeredUser]);
 
   useEffect(() => {
     if (state === 1 && secondsRemaining > 0) {
@@ -160,38 +154,18 @@ const App = () => {
 
       {state === 1 && (
         <Box textAlign="center" mt={5}>
-          <Typography variant="h4">Next Round Starting!</Typography>
+          <Typography variant="h4">Go to table {table + 1}</Typography>
           <Typography variant="h5">
             {`Time Remaining: ${Math.floor(secondsRemaining / 60)}:${String(
               secondsRemaining % 60
             ).padStart(2, "0")}`}
           </Typography>
-          <TextField
-            variant="outlined"
-            label="What idea are you passionate about?"
-            value={idea}
-            onChange={handleIdeaChange}
-            margin="normal"
-            fullWidth
-            multiline
-            rows={4}
-          />
         </Box>
       )}
 
       {(state === 2 || state === 0) && (
         <Box textAlign="center" mt={5}>
-          <Typography variant="h4">Waiting for Next Round...</Typography>
-          <TextField
-            variant="outlined"
-            label="What idea are you passionate about?"
-            value={idea}
-            onChange={handleIdeaChange}
-            margin="normal"
-            fullWidth
-            multiline
-            rows={4}
-          />
+          <Typography variant="h4">Waiting for next round...</Typography>
         </Box>
       )}
 
@@ -199,12 +173,20 @@ const App = () => {
         <Box textAlign="center" mt={5}>
           <Typography variant="h4">Thank You!</Typography>
           <Typography>
-            Your session has ended. Please submit your question.
+            The session has ended. Please submit your idea.
           </Typography>
+          <TextField
+            variant="outlined"
+            label="What idea are you passionate about?"
+            value={idea}
+            onChange={handleIdeaChange}
+            margin="normal"
+            fullWidth
+            multiline
+            rows={4}
+          />
         </Box>
       )}
-
-      {state === 1 && <CircularProgress />}
     </Container>
   );
 };
