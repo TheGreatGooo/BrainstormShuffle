@@ -129,7 +129,7 @@ def idea_get():
         return jsonify(result.toDict()), 200
 
 @api.route('/ideas', methods=['GET'])
-def idea_get():
+def ideas_get():
     result = db.session.query(IdeaLog).all()
     ideas = []
     for idea in result:
