@@ -4,6 +4,7 @@ class Brainstorm:
         self.users = users
         self.rounds = rounds
         self.state = state
+        self.influence_matrix = influence_matrix
     def toDict(self):
         return {"influence_matrix":self.influence_matrix,"users":[x.toDict() for x in self.users],"rounds":[x.toDict() for x in self.rounds], "state":self.state}
 class Round:
